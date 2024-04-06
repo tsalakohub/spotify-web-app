@@ -1,6 +1,6 @@
 "use client";
 import Image from 'next/image';
-import styles from '../app/pageStyle.css'; 
+import styles from '../app/pageStyle.css'; // Ensure this matches your CSS module path
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
@@ -118,15 +118,13 @@ export default function Home() {
         </div>
       </section>
       <section className={`${styles.pulseAnimation} mt-12`}>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-solid px-5 py-4 transition-colors bg-white text-black hover:border-white hover:bg-gray-50 hover:text-black hover:dark:border-neutral-700 animate-pulse"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link 
+          href= "/app/login"
+          className={`px-8 py-4 bg-white text-black font-bold rounded-lg shadow-lg ${styles.pulseButton}`}
         >
           Get Started By Logging In
-        </a>
-      </section>
+        </Link>
+    </section>
     </main>
   );
 }
