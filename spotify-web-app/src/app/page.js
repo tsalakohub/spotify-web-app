@@ -58,7 +58,6 @@ export default function Home() {
     '#FF0099', // Magenta
   ];
   
-
   const [currentColorIndex, setCurrentColorIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const message = "Diiscover Your Music Palette";
