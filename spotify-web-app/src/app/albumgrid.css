@@ -1,0 +1,151 @@
+/* Container styling for album grid, including layout, color, and overflow handling */
+.album-grid-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    color: white;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    min-height: calc(135vh - 100px); 
+}
+
+/* Animated line with infinite movement and color change */
+.album-grid-container::before {
+    content: '';
+    position: absolute;
+    top: 101px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    animation: animateLine 8s linear infinite, colorChange 10s linear infinite, shadowColorChange 10s linear infinite;
+}
+
+/* Keyframes for horizontal line movement */
+@keyframes animateLine {
+    0% {
+        transform: translateX(-100%); /* Start from outside the left side */
+    }
+    100% {
+        transform: translateX(100%); /* End at the right side beyond the view */
+    }
+}
+
+@keyframes colorChange {
+    0% { background-color: #FF0000; } 
+    12% { background-color: #0000FF; } 
+    24% { background-color: #00FF00; } 
+    36% { background-color: #FFFF00; }
+    48% { background-color: #800080; } 
+    60% { background-color: #00FFFF; }
+    72% { background-color: #FFA500; }
+    84% { background-color: #00FF00; } 
+    96% { background-color: #FF1493; }
+    100% { background-color: #FF0000; } 
+}
+
+@keyframes shadowColorChange {
+    0% { box-shadow: 0 0 20px 2px #FF0000; } 
+    12% { box-shadow: 0 0 20px 2px #0000FF; } 
+    24% { box-shadow: 0 0 20px 2px #00FF00; } 
+    36% { box-shadow: 0 0 20px 2px #FFFF00; } 
+    48% { box-shadow: 0 0 20px 2px #800080; } 
+    60% { box-shadow: 0 0 20px 2px #00FFFF; }
+    72% { box-shadow: 0 0 20px 2px #FFA500; } 
+    84% { box-shadow: 0 0 20px 2px #00FF00; }
+    96% { box-shadow: 0 0 20px 2px #FF1493; } 
+    100% { box-shadow: 0 0 20px 2px #FF0000; } 
+}
+
+/* Animated dot with infinite movement and color change */
+.album-grid-container::after {
+    content: '';
+    position: absolute;
+    top: 98px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: animateDot 4s linear infinite, colorChange 10s linear infinite, shadowColorChange 10s linear infinite;
+}
+
+/* Keyframes for dot movement */
+@keyframes animateDot {
+    0% {
+        transform: translateX(-10px) scale(1); /* Starts just outside the left, visible */
+    }
+    100% {
+        transform: translateX(100vw) scale(1); /* Ends just outside the right, still visible */
+    }
+}
+
+@keyframes glow {
+    0%, 100% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
+    50% { text-shadow: 0 0 20px #FF00FF, 0 0 30px #FF00FF; }
+}
+
+h1 {
+    margin-bottom: 75px;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    color: #FFF;
+    animation: glow 3s ease-in-out infinite;
+    font-family: 'Courier New', Courier, monospace;
+}
+.grid-container {
+    display: grid;
+    width: 80vw;
+    height: 80vh;
+    overflow: hidden;
+    gap: 5px;
+}
+
+.grid-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    aspect-ratio: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.grid-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.label-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    margin: 20px auto; /* More space around the container */
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.grid-size-input {
+    padding: 1px .5px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: black;
+    background-color: #fff;
+    text-align: center; 
+}
+
+.randomize-button {
+    padding: 5px 2px;
+    border-radius: 4px; 
+    background-color: #3bb519; 
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}

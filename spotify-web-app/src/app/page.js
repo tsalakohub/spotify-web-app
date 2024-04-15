@@ -1,9 +1,7 @@
 "use client";
-import Image from 'next/image';
 import styles from '../app/pageStyle.css'; 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-
+import { loginURL } from './spotify';
 
 // MusicNotes Component
 const MusicNotes = ({ count = 10 }) => {
@@ -117,9 +115,8 @@ export default function Home() {
         </div>
       </section>
       <section className={`${styles.pulseAnimation} mt-12`}>
-        <a 
-        // place holder, need to figure out the path to the login page. 
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+        <a
+          href= {loginURL}
           className="group rounded-lg border border-solid px-5 py-4 transition-colors bg-white text-black hover:border-white hover:bg-gray-50 hover:text-black hover:dark:border-neutral-700 animate-pulse"
           target="_blank"
           rel="noopener noreferrer"
