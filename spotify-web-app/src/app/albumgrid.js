@@ -5,9 +5,11 @@ import '../app/albumgrid.css'; // Import the CSS file
 const AlbumGrid = () => {
   const [gridSize, setGridSize] = useState(5);
   const [cells, setCells] = useState([]);
+  const [loading, setLoading] = useState(false);  // New loading state
 
   useEffect(() => {
-    const fetchImages = () => {
+    const fetchImages = async () => {
+      setLoading(true); // Start loading
       const newCells = Array.from({ length: gridSize * gridSize }, (_, index) => {
         const width = Math.floor(window.innerWidth / gridSize);
         const height = Math.floor(window.innerHeight / gridSize);
@@ -18,8 +20,12 @@ const AlbumGrid = () => {
         };
       });
       setCells(newCells);
+    
+      setTimeout(() => {
+        setLoading(false); // End loading after a delay
+      }, 2000); // Delay in milliseconds, e.g., 2000ms = 2 seconds
     };
-
+    
     fetchImages(); // Call fetchImages on component mount and gridSize change
   }, [gridSize]);
 
@@ -29,10 +35,12 @@ const AlbumGrid = () => {
   };
 
   const randomizeImages = () => {
+    setLoading(true); // Start loading during randomization
     setCells(cells.map(cell => ({
       ...cell,
       coverUrl: `https://picsum.photos/${Math.floor(window.innerWidth / gridSize)}/${Math.floor(window.innerHeight / gridSize)}?random=${Math.floor(Math.random() * 1000)}`
     })));
+    setLoading(false); // End loading
   };
 
   return (
@@ -51,13 +59,17 @@ const AlbumGrid = () => {
         />
         <button onClick={randomizeImages} className="randomize-button">Randomize Pictures</button>
       </div>
-      <div className="grid-container" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
-        {cells.map(cell => (
-          <div key={cell.id} className="grid-cell">
-            <img src={cell.coverUrl} alt={cell.title} />
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <div className="loading-container">Loading...</div>
+      ) : (
+        <div className="grid-container" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
+          {cells.map(cell => (
+            <div key={cell.id} className="grid-cell">
+              <img src={cell.coverUrl} alt={cell.title} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
