@@ -4,6 +4,8 @@ import styles from '../app/pageStyle.css';
 import { useState, useEffect } from 'react';
 import { MusicNotes } from '@/components/MusicNotes';
 import { LOGIN_URL, SpotifyComponent } from '@/api/spotify';
+import axios from "axios";
+
 
 // Main Home Component
 const page = () => {

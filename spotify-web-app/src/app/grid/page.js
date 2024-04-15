@@ -3,38 +3,41 @@
 import React, { useState, useEffect } from 'react';
 import { MusicNotes } from '@/components/MusicNotes';
 import '@/app/albumgrid.css'; // Import the CSS file
+import axios from "axios";
+const ALBUM_ENDPOINT = "https://api.spotify.com/v1/me/player/recently-played";
+
 
 const AlbumGrid = () => {
   const [gridSize, setGridSize] = useState(5);
   const [cells, setCells] = useState([]);
 
   useEffect(() => {
-    const fetchImages = () => {
-      const newCells = Array.from({ length: gridSize * gridSize }, (_, index) => {
-        const width = Math.floor(window.innerWidth / gridSize);
-        const height = Math.floor(window.innerHeight / gridSize);
-        return {
+    const fetchAlbums = () => {
+      axios.get(ALBUM_ENDPOINT, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      })
+      .then(response => {
+        const albums = response.data.items;
+        const newCells = albums.map((album, index) => ({
           id: index,
-          title: `Cell ${index + 1}`,
-          coverUrl: `https://picsum.photos/${width}/${height}?random=${index}`
-        };
+          title: album.track.album.name,
+          coverUrl: album.track.album.images[0].url
+        }));
+        setCells(newCells);
+      })
+      .catch(error => {
+        console.log(error);
       });
-      setCells(newCells);
     };
 
-    fetchImages(); // Call fetchImages on component mount and gridSize change
-  }, [gridSize]);
+    fetchAlbums();
+  }, []);
 
   const handleGridSizeChange = (e) => {
     const newSize = Math.min(10, Math.max(1, parseInt(e.target.value, 10)));
     setGridSize(newSize);
-  };
-
-  const randomizeImages = () => {
-    setCells(cells.map(cell => ({
-      ...cell,
-      coverUrl: `https://picsum.photos/${Math.floor(window.innerWidth / gridSize)}/${Math.floor(window.innerHeight / gridSize)}?random=${Math.floor(Math.random() * 1000)}`
-    })));
   };
 
   return (
@@ -46,17 +49,18 @@ const AlbumGrid = () => {
           id="grid-size-input"
           type="number"
           min="1"
-          max="10"
+          max="5"
           value={gridSize}
           onChange={handleGridSizeChange}
           className="grid-size-input"
         />
-        <button onClick={randomizeImages} className="randomize-button">Randomize Pictures</button>
       </div>
       <div className="grid-container" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
         {cells.map(cell => (
           <div key={cell.id} className="grid-cell">
-            <img src={cell.coverUrl} alt={cell.title} />
+            <div className="square-wrapper">
+              <img src={cell.coverUrl} alt={cell.title} className="square-image" />
+            </div>
           </div>
         ))}
       </div>
