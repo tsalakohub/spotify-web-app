@@ -13,26 +13,8 @@
     min-height: calc(135vh - 100px); 
 }
 
-/* Animated line with infinite movement and color change */
-.album-grid-container::before {
-    content: '';
-    position: absolute;
-    top: 101px;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    animation: animateLine 8s linear infinite, colorChange 10s linear infinite, shadowColorChange 10s linear infinite;
-}
-
 /* Keyframes for horizontal line movement */
-@keyframes animateLine {
-    0% {
-        transform: translateX(-100%); /* Start from outside the left side */
-    }
-    100% {
-        transform: translateX(100%); /* End at the right side beyond the view */
-    }
-}
+
 
 @keyframes colorChange {
     0% { background-color: #FF0000; } 
@@ -60,27 +42,10 @@
     100% { box-shadow: 0 0 20px 2px #FF0000; } 
 }
 
-/* Animated dot with infinite movement and color change */
-.album-grid-container::after {
-    content: '';
-    position: absolute;
-    top: 98px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    animation: animateDot 4s linear infinite, colorChange 10s linear infinite, shadowColorChange 10s linear infinite;
-}
+
 
 /* Keyframes for dot movement */
-@keyframes animateDot {
-    0% {
-        transform: translateX(-10px) scale(1); /* Starts just outside the left, visible */
-    }
-    100% {
-        transform: translateX(100vw) scale(1); /* Ends just outside the right, still visible */
-    }
-}
+
 
 @keyframes glow {
     0%, 100% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
@@ -90,16 +55,16 @@
 h1 {
     margin-bottom: 75px;
     text-align: center;
-    font-size: 2em;
+    font-size: 3em;
     font-weight: bold;
     color: #FFF;
     animation: glow 3s ease-in-out infinite;
-    font-family: 'Courier New', Courier, monospace;
+    /* font-family: 'Courier New', Courier, monospace; */
 }
 .grid-container {
     display: grid;
-    width: 80vw;
-    height: 80vh;
+    width: 3200px;
+    height: 3200px;
     overflow: hidden;
     gap: 5px;
 }
@@ -111,8 +76,13 @@ h1 {
     justify-content: center;
     overflow: hidden;
     aspect-ratio: 1;
-    width: 100%;
-    height: 100%;
+    max-width: 100%; /* Ensure the image doesn't exceed the width of its container */
+    max-height: 100%; /* Ensure the image doesn't exceed the height of its container */
+    width: auto; /* Allow the image to scale proportionally */
+    height: auto; /* Allow the image to scale proportionally */
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 .grid-cell {
@@ -122,15 +92,16 @@ h1 {
     justify-content: center;
     aspect-ratio: 1 / 1; /* This maintains a 1:1 aspect ratio */
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .label-input-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0px;
     width: auto;
     margin: 20px auto; /* More space around the container */
-    font-family: 'Courier New', Courier, monospace;
+    /* font-family: 'Courier New', Courier, monospace; */
 }
 
 .grid-size-input {

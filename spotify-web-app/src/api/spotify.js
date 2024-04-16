@@ -6,7 +6,6 @@ import Link from 'next/link';
 const REDIRECT_URI = "http://localhost:3000/";
 const CLIENT_ID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
 const SCOPES = ["user-read-email", "user-read-private", "user-read-recently-played",];
-const RESPONSE_TYPE = "token";
 const AUTH_ENDPOINT = "http://accounts.spotify.com/authorize";
 const SPACE_DELIMITER = "%20";
 const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
@@ -76,4 +75,3 @@ export function SpotifyComponent() {
         </div>
     );
 }
-
