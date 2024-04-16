@@ -2,14 +2,11 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import SpotifyGetAlbums from './getSpotifyAlbums';
 
 const REDIRECT_URI = "http://localhost:3000/";
 const CLIENT_ID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
 const SCOPES = ["user-read-email", "user-read-private", "user-read-recently-played",];
 const RESPONSE_TYPE = "token";
-const ALBUM_ENDPOINT = "https://api.spotify.com/v1/me/player/recently-played?limit=25";
-const CLIENT_SECRET = process.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET;
 const AUTH_ENDPOINT = "http://accounts.spotify.com/authorize";
 const SPACE_DELIMITER = "%20";
 const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
