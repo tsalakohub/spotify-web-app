@@ -1,12 +1,11 @@
 "use client"
-
 import React, { useState, useEffect } from 'react';
-import { MusicNotes } from '@/components/MusicNotes';
 import Link from 'next/link';
 import '@/app/albumgrid.css'; // Import the CSS file
 import axios from "axios";
-const ALBUM_ENDPOINT = "https://api.spotify.com/v1/me/player/recently-played";
+import html2canvas from 'html2canvas';
 
+const ALBUM_ENDPOINT = "https://api.spotify.com/v1/me/player/recently-played";
 
 const AlbumGrid = () => {
   const [gridSize, setGridSize] = useState(5);
@@ -24,7 +23,8 @@ const AlbumGrid = () => {
         const newCells = albums.map((album, index) => ({
           id: index,
           title: album.track.album.name,
-          coverUrl: album.track.album.images[0].url
+          coverUrl: album.track.album.images[0].url,
+          spotifyLink: album.track.external_urls.spotify
         }));
         setCells(newCells);
       })
@@ -37,7 +37,7 @@ const AlbumGrid = () => {
   }, []);
 
   const handleGridSizeChange = (e) => {
-    const newSize = Math.min(10, Math.max(1, parseInt(e.target.value, 10)));
+    const newSize = Math.min(10, Math.max(1, parseInt(e.target.value, 6)));
     setGridSize(newSize);
   
     const fetchAlbums = () => {
@@ -51,7 +51,8 @@ const AlbumGrid = () => {
         const newCells = albums.map((album, index) => ({
           id: index,
           title: album.track.album.name,
-          coverUrl: album.track.album.images[0].url
+          coverUrl: album.track.album.images[0].url,
+          spotifyLink: album.track.external_urls.spotify
         }));
         setCells(newCells.slice(0, newSize * newSize)); // Update cells with new size
       })
@@ -62,31 +63,58 @@ const AlbumGrid = () => {
   
     fetchAlbums();
   };
+
+  const randomizeGrid = () => {
+    const shuffledCells = [...cells].sort(() => Math.random() - 0.5);
+    setCells(shuffledCells);
+  };
+
+  const downloadGrid = () => {
+    const gridContainer = document.querySelector('.grid-container');
+    const gridClone = gridContainer.cloneNode(true);
   
+    // Append the cloned grid to the document temporarily
+    document.body.appendChild(gridClone);
+  
+    // Capture the cloned grid
+    html2canvas(gridClone, {
+      foreignObjectRendering: true, // Wait for images to load
+    })
+      .then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'album_grid.png';
+        link.href = canvas.toDataURL();
+        link.click();
+  
+        // Remove the cloned grid from the document
+        document.body.removeChild(gridClone);
+      });
+  };
 
   return (
-    <div className="album-grid-container">
-       <Link href="/">
-       <MusicNotes count={15} />
-        </Link>
-      <h1 style={{ color: 'white' }}>Your Top Albums</h1>
+    <div className="album-grid-container" style={{ position: 'relative' }}>
+      <h1 style={{ color: 'white', position: 'relative', zIndex: 10 }}>Your Top Albums</h1>
       <div className="label-input-container">
         <label htmlFor="grid-size-input" className="grid-size-label">Enter a Dimension:</label>
         <input
           id="grid-size-input"
           type="number"
           min="1"
-          max="5"
+          max="6"
           value={gridSize}
           onChange={handleGridSizeChange}
           className="grid-size-input"
         />
+       <button onClick={randomizeGrid} className="randomize-button">Randomize</button>
+       <button onClick={downloadGrid} className="randomize-button">Download Grid</button>
       </div>
       <div className="grid-container" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
         {cells.map(cell => (
-          <div key={cell.id} className="grid-cell">
+          <div key={cell.id} className="grid-cell" style={{ maxWidth: `var(--cell-size)` }}>
             <div className="square-wrapper">
-              <img src={cell.coverUrl} alt={cell.title} className="square-image" />
+              <a href={cell.spotifyLink} target="_blank" rel="noopener noreferrer">
+                <img src={cell.coverUrl} alt={cell.title} className="square-image" />
+              </a>
             </div>
           </div>
         ))}
@@ -94,4 +122,5 @@ const AlbumGrid = () => {
     </div>
   );
 };
+
 export default AlbumGrid;

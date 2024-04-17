@@ -1,144 +1,138 @@
-/* Container styling for album grid, including layout, color, and overflow handling */
 .album-grid-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: black;
     color: white;
     width: 100vw;
-    height: 100vh;
     overflow: hidden;
     position: relative;
-    min-height: calc(135vh - 100px); 
+    min-height: 100vh;
+    padding-top: 2vh;
+    background: linear-gradient(to bottom, #000000, #221c35); /* Example gradient from black to dark blue */
 }
 
-/* Keyframes for horizontal line movement */
-
-
-@keyframes colorChange {
-    0% { background-color: #FF0000; } 
-    12% { background-color: #0000FF; } 
-    24% { background-color: #00FF00; } 
-    36% { background-color: #FFFF00; }
-    48% { background-color: #800080; } 
-    60% { background-color: #00FFFF; }
-    72% { background-color: #FFA500; }
-    84% { background-color: #00FF00; } 
-    96% { background-color: #FF1493; }
-    100% { background-color: #FF0000; } 
-}
-
-@keyframes shadowColorChange {
-    0% { box-shadow: 0 0 20px 2px #FF0000; } 
-    12% { box-shadow: 0 0 20px 2px #0000FF; } 
-    24% { box-shadow: 0 0 20px 2px #00FF00; } 
-    36% { box-shadow: 0 0 20px 2px #FFFF00; } 
-    48% { box-shadow: 0 0 20px 2px #800080; } 
-    60% { box-shadow: 0 0 20px 2px #00FFFF; }
-    72% { box-shadow: 0 0 20px 2px #FFA500; } 
-    84% { box-shadow: 0 0 20px 2px #00FF00; }
-    96% { box-shadow: 0 0 20px 2px #FF1493; } 
-    100% { box-shadow: 0 0 20px 2px #FF0000; } 
+.grid-container {
+    display: grid;
+    width: 55vw; /* Decrease the width to 60vw or any value you prefer */
+    grid-template-columns: repeat(auto-fill, minmax(80px, var(--cell-size))); /* Using CSS variable */
+    gap: 1vw;
+    padding: 20px;
+    margin-bottom: 5vh;
+    overflow: hidden;
 }
 
 
+.grid-cell {
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: transform 0.3s ease; /* Add transition for smooth effect */
+}
 
-/* Keyframes for dot movement */
+.grid-cell:hover {
+    transform: translateY(-5px); /* Lift up on hover */
+}
 
+.grid-cell a:hover {
+    cursor: pointer; /* Change cursor to indicate clickable */
+}
+
+.square-image {
+    width: 100%; /* fill the container */
+    height: 100%; /* fill the container */
+    object-fit: cover; /* maintain aspect ratio without stretching the image */
+}
+
+.square-wrapper {
+    padding: 2%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+
+.label-input-container {
+    margin-bottom: 20px; /* This ensures a fixed margin regardless of grid size */
+    z-index: 10;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Add this line to create space between input and button */
+    width: auto;
+    margin: 0 auto 20px; /* Centers horizontally and adds a fixed bottom margin */
+}
+
+.grid-size-label {
+    padding-right: 5px; /* Add padding to the right side of the label */
+}
+   
+.grid-size-input {
+    border: 2px solid #ccc;
+    color: black;
+    background-color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.randomize-button {
+    background-color: #3bb519;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-align: center;
+    margin-left: 10px;
+}
+
+
+h1 {
+    margin-bottom: 60px;
+    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
+    animation: glow 3s ease-in-out infinite;
+}
 
 @keyframes glow {
     0%, 100% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
     50% { text-shadow: 0 0 20px #FF00FF, 0 0 30px #FF00FF; }
 }
 
-h1 {
-    margin-bottom: 75px;
-    text-align: center;
-    font-size: 3em;
-    font-weight: bold;
-    color: #FFF;
-    animation: glow 3s ease-in-out infinite;
-    /* font-family: 'Courier New', Courier, monospace; */
-}
-.grid-container {
-    display: grid;
-    width: 3200px;
-    height: 3200px;
-    overflow: hidden;
-    gap: 5px;
+@keyframes animateLine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
-.grid-cell {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    aspect-ratio: 1;
-    max-width: 100%; /* Ensure the image doesn't exceed the width of its container */
-    max-height: 100%; /* Ensure the image doesn't exceed the height of its container */
-    width: auto; /* Allow the image to scale proportionally */
-    height: auto; /* Allow the image to scale proportionally */
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+@keyframes colorAndShadowChange {
+    0%, 100% { background-color: #FF0000; box-shadow: 0 0 20px 2px #FF0000; }
+    12% { background-color: #0000FF; box-shadow: 0 0 20px 2px #0000FF; }
+    24% { background-color: #00FF00; box-shadow: 0 0 20px 2px #00FF00; }
+    36% { background-color: #FFFF00; box-shadow: 0 0 20px 2px #FFFF00; }
+    48% { background-color: #800080; box-shadow: 0 0 20px 2px #800080; }
+    60% { background-color: #00FFFF; box-shadow: 0 0 20px 2px #00FFFF; }
+    72% { background-color: #FFA500; box-shadow: 0 0 20px 2px #FFA500; }
+    84% { background-color: #00FF00; box-shadow: 0 0 20px 2px #00FF00; }
+    96% { background-color: #FF1493; box-shadow: 0 0 20px 2px #FF1493; }
 }
 
-.grid-cell {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    aspect-ratio: 1 / 1; /* This maintains a 1:1 aspect ratio */
-    overflow: hidden;
-    box-sizing: border-box;
-}
-
-.label-input-container {
-    display: flex;
-    align-items: center;
-    gap: 0px;
-    width: auto;
-    margin: 20px auto; /* More space around the container */
-    /* font-family: 'Courier New', Courier, monospace; */
-}
-
-.grid-size-input {
-    padding: 1px .5px;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    color: black;
-    background-color: #fff;
-    text-align: center; 
-}
-
-.randomize-button {
-    padding: 5px 10px;
-    border-radius: 4px; 
-    background-color: #3bb519; 
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.grid-container, .loading-container {
-    width: 80vw;
-    height: 80vh; /* This fixes the height of the grid container */
-}
-
-.loading-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.loading-container {
-    width: 80vw;
-    height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.album-grid-container::before {
+    content: '';
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    animation: animateLine 8s linear infinite, colorAndShadowChange 10s linear infinite;
 }

@@ -61,14 +61,14 @@ export function SpotifyComponent() {
                 <a
                     onClick={handleLogin}
                     id="signInButton"
-                    className="group rounded-lg border border-solid px-5 py-4 transition-colors bg-white text-black hover:border-white hover:bg-gray-50 hover:text-black hover:dark:border-neutral-700 animate-pulse"
+                    className="group transition-colors bg-white text-black hover:border-white hover:bg-gray-50 hover:text-black hover:dark:border-neutral-700 animate-pulse"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
                     Get Started By Logging In
                 </a>
             ) : (
-                <Link href="/grid">
+                <Link href="/grid" className="animate-pulse">
                 Explore your Pixel Grid
               </Link>
             )}
