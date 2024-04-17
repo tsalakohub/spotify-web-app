@@ -33,7 +33,7 @@
 /* Styles for the music note animation */
 .music-note {
   position: absolute;
-  top: -8%; 
+  top: -10%; 
   font-size: 50px; /* Adjust size as needed */
   animation-name: floatUp;
   animation-timing-function: ease-in;

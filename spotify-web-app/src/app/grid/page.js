@@ -70,56 +70,56 @@ const AlbumGrid = () => {
   };
 
   const downloadGrid = () => {
-    const gridContainer = document.querySelector('.grid-container');
-    const gridClone = gridContainer.cloneNode(true);
-  
-    // Append the cloned grid to the document temporarily
-    document.body.appendChild(gridClone);
-  
-    // Capture the cloned grid
-    html2canvas(gridClone, {
-      foreignObjectRendering: true, // Wait for images to load
-    })
-      .then(canvas => {
+    const gridContainer = document.querySelector('.grid-container'); // Ensure this matches your actual grid container's class
+    if (gridContainer) {
+      html2canvas(gridContainer, {
+        scale: 1,
+        useCORS: true
+      }).then(canvas => {
+        const image = canvas.toDataURL('image/png');
         const link = document.createElement('a');
-        link.download = 'album_grid.png';
-        link.href = canvas.toDataURL();
+        link.href = image;
+        link.download = 'Your-Top-Albums.png'; 
+        document.body.appendChild(link); 
         link.click();
-  
-        // Remove the cloned grid from the document
-        document.body.removeChild(gridClone);
+        document.body.removeChild(link); 
+      }).catch(err => {
+        console.error('Error downloading the grid: ', err);
       });
+    } else {
+      console.error('Grid container not found');
+    }
   };
-
+    
   return (
     <div className="album-grid-container" style={{ position: 'relative' }}>
-      <h1 style={{ color: 'white', position: 'relative', zIndex: 10 }}>Your Top Albums</h1>
-      <div className="label-input-container">
-        <label htmlFor="grid-size-input" className="grid-size-label">Enter a Dimension:</label>
-        <input
-          id="grid-size-input"
-          type="number"
-          min="1"
-          max="6"
-          value={gridSize}
-          onChange={handleGridSizeChange}
-          className="grid-size-input"
-        />
-       <button onClick={randomizeGrid} className="randomize-button">Randomize</button>
-       <button onClick={downloadGrid} className="randomize-button">Download Grid</button>
-      </div>
-      <div className="grid-container" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
-        {cells.map(cell => (
-          <div key={cell.id} className="grid-cell" style={{ maxWidth: `var(--cell-size)` }}>
-            <div className="square-wrapper">
-              <a href={cell.spotifyLink} target="_blank" rel="noopener noreferrer">
-                <img src={cell.coverUrl} alt={cell.title} className="square-image" />
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
+    <h1 style={{ color: 'white', position: 'relative', zIndex: 10 }}>Your Top Albums</h1>
+    <div className="label-input-container">
+      <label htmlFor="grid-size-input" className="grid-size-label">Enter a Dimension:</label>
+      <input
+        id="grid-size-input"
+        type="number"
+        min="1"
+        max="6"
+        value={gridSize}
+        onChange={handleGridSizeChange}
+        className="grid-size-input"
+      />
+      <button onClick={randomizeGrid} className="randomize-button">Randomize</button>
+      <button onClick={downloadGrid} className="randomize-button">Download Grid</button>
     </div>
+    <div id="capture" className="grid-container" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
+      {cells.map(cell => (
+        <div key={cell.id} className="grid-cell" style={{ maxWidth: `var(--cell-size)` }}>
+          <div className="square-wrapper">
+            <a href={cell.spotifyLink} target="_blank" rel="noopener noreferrer">
+              <img src={cell.coverUrl} alt={cell.title} className="square-image" />
+            </a>
+          </div>
+        </div>
+      ))}
+  </div>
+</div>
   );
 };
 
