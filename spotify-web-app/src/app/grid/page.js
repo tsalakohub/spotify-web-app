@@ -4,12 +4,15 @@ import Link from 'next/link';
 import '@/app/albumgrid.css'; // Import the CSS file
 import axios from "axios";
 import html2canvas from 'html2canvas';
+import styles from '@/app/pageStyle.css'; 
 
-const ALBUM_ENDPOINT = "https://api.spotify.com/v1/me/player/recently-played";
+
+const ALBUM_ENDPOINT = "https://api.spotify.com/v1/me/player/recently-played?limit=25";
 
 const AlbumGrid = () => {
   const [gridSize, setGridSize] = useState(5);
   const [cells, setCells] = useState([]);
+  const [hoveredAlbum, setHoveredAlbum] = useState(null);
 
   useEffect(() => {
     const fetchAlbums = () => {
@@ -22,7 +25,7 @@ const AlbumGrid = () => {
         const albums = response.data.items;
         const newCells = albums.map((album, index) => ({
           id: index,
-          title: album.track.album.name,
+          title: album.track.type === 'track' ? album.track.name : album.album.name,
           coverUrl: album.track.album.images[0].url,
           spotifyLink: album.track.external_urls.spotify
         }));
@@ -48,9 +51,9 @@ const AlbumGrid = () => {
       })
       .then(response => {
         const albums = response.data.items;
-        const newCells = albums.map((album, index) => ({
+        const newCells = albums.slice(0, Math.min(albums.length, newSize * newSize)).map((album, index) => ({
           id: index,
-          title: album.track.album.name,
+          title: album.track.type === 'track' ? album.track.name : album.album.name,
           coverUrl: album.track.album.images[0].url,
           spotifyLink: album.track.external_urls.spotify
         }));
@@ -90,6 +93,7 @@ const AlbumGrid = () => {
       console.error('Grid container not found');
     }
   };
+
     
   return (
     <div className="album-grid-container" style={{ position: 'relative' }}>
@@ -109,15 +113,35 @@ const AlbumGrid = () => {
       <button onClick={downloadGrid} className="randomize-button">Download Grid</button>
     </div>
     <div id="capture" className="grid-container" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
-      {cells.map(cell => (
-        <div key={cell.id} className="grid-cell" style={{ maxWidth: `var(--cell-size)` }}>
-          <div className="square-wrapper">
-            <a href={cell.spotifyLink} target="_blank" rel="noopener noreferrer">
-              <img src={cell.coverUrl} alt={cell.title} className="square-image" />
-            </a>
+        {cells.map(cell => (
+          <div
+            key={cell.id}
+            className="grid-cell"
+            style={{ maxWidth: `var(--cell-size)` }}
+            onMouseEnter={() => setHoveredAlbum(cell)}
+            onMouseLeave={() => setHoveredAlbum(null)}
+          >
+            <div className="square-wrapper">
+              <a
+                href={cell.spotifyLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src={cell.coverUrl} alt={cell.title} className="square-image" />
+              </a>
+              {hoveredAlbum === cell && (
+                <div className="tooltip">
+                  <p>{cell.title}</p>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
       ))}
+  </div>
+  <div className={styles.backHomeContainer}>
+    <button className={`${styles.pulseAnimation} mt-12`}>
+      <Link href="/">Back to Home</Link>
+    </button>
   </div>
 </div>
   );
