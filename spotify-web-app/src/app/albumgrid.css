@@ -13,6 +13,17 @@
     background: linear-gradient(to bottom, #000000, #221c35); /* Example gradient from black to dark blue */
 }
 
+.album-grid-container::before {
+    content: '';
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    animation: animateLine 8s linear infinite, colorAndShadowChange 10s linear infinite;
+}
+
+
 .grid-container {
     display: grid;
     width: 55vw; /* Decrease the width to 60vw or any value you prefer */
@@ -23,15 +34,17 @@
     overflow: hidden;
 }
 
-
 .grid-cell {
     aspect-ratio: 1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
     overflow: hidden;
-    transition: transform 0.3s ease; /* Add transition for smooth effect */
+    position: relative; /* Required for absolute positioning of the title */
+    cursor: pointer;
+    padding: 8px;
 }
 
 .grid-cell:hover {
@@ -43,10 +56,11 @@
 }
 
 .square-image {
-    width: 100%; /* fill the container */
-    height: 100%; /* fill the container */
-    object-fit: cover; /* maintain aspect ratio without stretching the image */
+    width: 100%; /* Maintain full width within the container */
+    height: auto; /* Adjust height automatically */
+    object-fit: cover; /* Ensure the image covers the area without distortion */
     border-radius: 8px;
+    margin-bottom: 5px; /* Space between image and title */
 }
 
 .square-wrapper {
@@ -59,6 +73,34 @@
     overflow: hidden;
 }
 
+
+.album-title {
+    position: absolute; /* Position the title over the image */
+    bottom: 0; /* Align it to the bottom of the image */
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    color: white;
+    text-align: center;
+    font-size: .7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 2px 0; /* Padding for better readability */
+    opacity: 0; /* Initially hide the title */
+    transition: opacity 0.3s ease-in-out; /* Smooth transition for the hover effect */
+}
+
+.grid-cell:hover .album-title {
+    opacity: 1; /* Show the title when cell is hovered */
+}
+
+h1 {
+    margin-bottom: 60px;
+    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
+    animation: glow 3s ease-in-out infinite;
+}
 
 .label-input-container {
     margin-bottom: 20px; /* This ensures a fixed margin regardless of grid size */
@@ -97,13 +139,12 @@
     margin-left: 10px;
 }
 
-
-h1 {
-    margin-bottom: 60px;
-    text-align: center;
-    font-size: 3em;
-    font-weight: bold;
-    animation: glow 3s ease-in-out infinite;
+.backHomeContainer {
+    position: absolute;
+    bottom: 20%;  /* Adjust this value to move the button up. It's a percentage of the height of the nearest positioned ancestor element. */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
 }
 
 @keyframes glow {
@@ -126,14 +167,4 @@ h1 {
     72% { background-color: #FFA500; box-shadow: 0 0 20px 2px #FFA500; }
     84% { background-color: #00FF00; box-shadow: 0 0 20px 2px #00FF00; }
     96% { background-color: #FF1493; box-shadow: 0 0 20px 2px #FF1493; }
-}
-
-.album-grid-container::before {
-    content: '';
-    position: absolute;
-    top: 100px;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    animation: animateLine 8s linear infinite, colorAndShadowChange 10s linear infinite;
 }

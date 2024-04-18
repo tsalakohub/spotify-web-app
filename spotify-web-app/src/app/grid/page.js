@@ -114,29 +114,20 @@ const AlbumGrid = () => {
     </div>
     <div id="capture" className="grid-container" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
         {cells.map(cell => (
-          <div
-            key={cell.id}
-            className="grid-cell"
-            style={{ maxWidth: `var(--cell-size)` }}
-            onMouseEnter={() => setHoveredAlbum(cell)}
-            onMouseLeave={() => setHoveredAlbum(null)}
-          >
-            <div className="square-wrapper">
-              <a
-                href={cell.spotifyLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+    <div
+        key={cell.id}
+        className="grid-cell"
+        onMouseEnter={() => setHoveredAlbum(cell)}
+        onMouseLeave={() => setHoveredAlbum(null)}
+    >
+        <div className="square-wrapper">
+            <a href={cell.spotifyLink} target="_blank" rel="noopener noreferrer">
                 <img src={cell.coverUrl} alt={cell.title} className="square-image" />
-              </a>
-              {hoveredAlbum === cell && (
-                <div className="tooltip">
-                  <p>{cell.title}</p>
-                </div>
-              )}
-            </div>
-          </div>
-      ))}
+            </a>
+        </div>
+        <div className="album-title">{cell.title}</div> {/* Display the title below the image */}
+    </div>
+))}
   </div>
   <div className={styles.backHomeContainer}>
     <button className={`${styles.pulseAnimation} mt-12`}>
